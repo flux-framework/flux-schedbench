@@ -1,0 +1,31 @@
+[tool.black]
+target-version = ['py36']
+force-exclude = "/^(env/|src/bindings/python/flux/utils)/"
+
+[tool.isort]
+profile = "black" # needed for black/isort compatibility
+
+
+[tool.mypy]
+python_version = "3.8"
+files = [
+  "src/bindings/python/flux/schedbench",
+  "src/cmd/**/*.py",
+  "t/python/*.py"]
+mypy_path = ["src/bindings/python", "t/python/tap", "t/python"]
+namespace_packages = true
+explicit_package_bases = true
+allow_redefinition = true
+ignore_missing_imports = true
+# Avoid spurious errors from stale cache state
+cache_dir = "/dev/null"
+
+  [[tool.mypy.overrides]]
+  module = "subflux"
+  ignore_errors = true
+  follow_imports = "skip"
+
+  [[tool.mypy.overrides]]
+  module = "pycotap"
+  ignore_errors = true
+  follow_imports = "skip"

@@ -74,6 +74,7 @@ AC_CONFIG_FILES([
   src/bindings/Makefile
   src/bindings/python/Makefile
   src/bindings/python/flux/Makefile
+  doc/Makefile
   t/Makefile
 ])
 AC_OUTPUT

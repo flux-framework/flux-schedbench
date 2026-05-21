@@ -56,7 +56,15 @@ from flux.schedbench.job_watcher import JournalEventWatcher, PerJobEventWatcher
 from flux.schedbench.ui import TerminalEmitter
 
 LOGGER = logging.getLogger("flux-schedbench")
-SCHEDBENCH_VERSION = "0.1.0"
+try:
+    from flux.schedbench.version import SCHEDBENCH_VERSION
+except (ImportError, AttributeError):
+    try:
+        from flux.schedbench.version import (
+            version as SCHEDBENCH_VERSION,  # type: ignore
+        )
+    except (ImportError, AttributeError):
+        SCHEDBENCH_VERSION = "unknown"
 
 #: Sentinel env var set on the outer schedbench process when it re-execs
 #: itself inside a fake-resources subinstance via ``flux start``. The inner

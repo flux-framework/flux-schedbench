@@ -8,4 +8,8 @@ nobase_fluxpy_PYTHON = \
 	schedbench/locality.py \
 	schedbench/results.py \
 	schedbench/sweep.py \
-	schedbench/ui.py
+	schedbench/ui.py \
+	schedbench/version.py
+
+EXTRA_DIST = schedbench/version.py.in
+DISTCLEANFILES = schedbench/version.py

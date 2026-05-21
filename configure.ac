@@ -74,6 +74,7 @@ AC_CONFIG_FILES([
   src/bindings/Makefile
   src/bindings/python/Makefile
   src/bindings/python/flux/Makefile
+  src/bindings/python/flux/schedbench/version.py
   doc/Makefile
   t/Makefile
 ])

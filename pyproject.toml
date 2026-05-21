@@ -1,3 +1,31 @@
+[build-system]
+requires = ["setuptools>=45", "setuptools_scm"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "flux-schedbench"
+dynamic = ["version"]
+description = "Scheduler benchmarking tool for the Flux resource manager"
+readme = "README.md"
+license = {text = "LGPL-3.0"}
+requires-python = ">=3.6"
+authors = [
+  {name = "Mark A. Grondona", email = "mark.grondona@gmail.com"},
+]
+# flux-core (the flux Python package) is a required runtime dependency
+# but is not available on PyPI — install it from source separately.
+dependencies = []
+
+[tool.setuptools.packages.find]
+where = ["src/bindings/python"]
+namespaces = true
+
+[tool.setuptools]
+script-files = ["src/cmd/flux-schedbench.py"]
+
+[tool.setuptools_scm]
+fallback_version = "0.1.0"
+
 [tool.black]
 target-version = ['py36']
 force-exclude = "/^(env/|src/bindings/python/flux/utils)/"

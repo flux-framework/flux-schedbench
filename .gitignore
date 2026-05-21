@@ -91,6 +91,11 @@ Makefile
 # ignore mypy generated cache directory
 .mypy_cache
 
+# Python packaging artifacts
+dist/
+*.egg-info/
+__pycache__/
+
 # ignore local, maybe generated tooling files
 compile_commands.json
 compile_flags.txt

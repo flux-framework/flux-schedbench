@@ -1,0 +1,59 @@
+on: [pull_request, push, merge_group]
+name: ci
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  check-pr:
+    name: validate commits
+    runs-on: ubuntu-latest
+    if: github.event_name == 'pull_request'
+    steps:
+    - uses: actions/checkout@v6.0.2
+      with:
+        ref: ${{ github.event.pull_request.head.sha }}
+        fetch-depth: 0
+    - run: git fetch origin main
+    - uses: flux-framework/pr-validator@master
+
+  spelling:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v6.0.2
+    - name: Check Spelling
+      uses: crate-ci/typos@v1.46.0
+
+  python-lint:
+    name: python linting
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/setup-python@v6.2.0
+    - uses: actions/checkout@v6.0.2
+    - name: install linting deps
+      run: pip install -r scripts/requirements-dev.txt
+    - name: run pre-commit
+      run: pre-commit run --all-files
+
+  ci-checks:
+    needs: [python-lint]
+    runs-on: ubuntu-latest
+    env:
+      TAP_DRIVER_QUIET: 1
+      FLUX_TEST_TIMEOUT: 300
+    strategy:
+      matrix:
+        image: [el8, el10, noble]
+      fail-fast: false
+    name: ${{ matrix.image }}
+    steps:
+    - uses: actions/checkout@v6.0.2
+      with:
+        fetch-depth: 0
+    - name: autogen
+      run: ./autogen.sh
+    - name: build and test
+      run: src/test/docker/docker-run-checks.sh -i ${{ matrix.image }} -j 4
+    - name: annotate errors
+      if: failure()
+      run: cat t/test-suite.log

@@ -10,7 +10,20 @@ against fake or real resources, and saves results for later comparison.
   `pkgutil` namespace-package support in `flux/__init__.py`)
 - Python ≥ 3.6
 
-## Build and install
+## Installation
+
+### pip (recommended)
+
+```sh
+pip install flux-schedbench
+```
+
+flux-core is a required runtime dependency but is not on PyPI — install
+it separately from source before using flux-schedbench.  Once installed,
+`flux schedbench` is available to any `flux` that finds `~/.local/bin`
+(or the pip prefix) in `PATH`.
+
+### From source (autotools)
 
 ```sh
 ./autogen.sh
